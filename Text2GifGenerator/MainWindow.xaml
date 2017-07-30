@@ -1,0 +1,74 @@
+﻿<Window x:Class="Text2GifGenerator.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Text2GifGenerator" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Name="Main" Title="MainWindow" Width="525"
+        Height="325" MinWidth="525" MinHeight="300"
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
+        d:DesignHeight="300" d:DesignWidth="525" mc:Ignorable="d">
+  <Window.Resources>
+    <ResourceDictionary>
+      <local:ImageToBitmapSourceConverter x:Key="ImageToBitmapSourceConverter" />
+    </ResourceDictionary>
+  </Window.Resources>
+
+  <Grid x:Name="MainGrid">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <TextBox x:Name="InputTextBox" Grid.Row="0" MinHeight="23"
+             Text="{Binding Text}" />
+
+    <Grid x:Name="ControlGrid" Grid.Row="1" Margin="0,4,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+
+      <Label Grid.Row="0" Grid.Column="0" Content="Font" />
+      <ComboBox x:Name="FontSelector" Grid.Row="0" Grid.Column="1"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding AvailableFontsCollection}"
+                SelectedItem="{Binding SelectedFont}" />
+
+      <Label Grid.Row="1" Grid.Column="0" Content="Font Size" />
+      <TextBox x:Name="FontSizeSelecter" Grid.Row="1" Grid.Column="1" />
+
+      <Label Grid.Row="2" Grid.Column="0" Content="Gif Height" />
+      <TextBox Grid.Row="2" Grid.Column="1" />
+
+      <Label Grid.Row="3" Grid.Column="0" Content="Foreground" />
+      <TextBox Grid.Row="3" Grid.Column="1" />
+
+      <Label Grid.Row="4" Grid.Column="0" Content="Background" />
+      <TextBox Grid.Row="4" Grid.Column="1" />
+
+      <Label Grid.Row="5" Grid.Column="0" Content="Gif Width" />
+      <TextBox Grid.Row="5" Grid.Column="1" />
+
+      <Label Grid.Row="6" Grid.Column="0" Content="Loop" />
+      <CheckBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center"
+                VerticalAlignment="Center" IsChecked="False" />
+
+      <Button Grid.Row="7" Grid.Column="1"
+              Command="{Binding GenerateCommand}"
+              CommandParameter="{Binding ElementName=Main}"
+              Content="Generate"
+              IsEnabled="{Binding CanExecuteGenerateCommand}" />
+    </Grid>
+
+    <Image x:Name="GifHolder" Grid.Row="2" Margin="0,8,0,0"
+           Source="{Binding DisplayedImage, Converter={StaticResource ImageToBitmapSourceConverter}}" />
+  </Grid>
+</Window>
