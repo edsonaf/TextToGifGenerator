@@ -33,16 +33,32 @@ namespace Text2GifGenerator
 
     public ObservableCollection<FontFamily> AvailableFontsCollection => new ObservableCollection<FontFamily>(new InstalledFontCollection().Families);
 
+    private FontFamily _selectedFont = new FontFamily("Tahoma");
     public FontFamily SelectedFont
     {
       get => _selectedFont;
       set => Set(() => SelectedFont, ref _selectedFont, value);
     }
 
+    private int _selectedFontSize = 12;
     public int SelectedFontSize
     {
       get => _selectedFontSize;
-      set => Set(() => SelectedFontSize, ref _selectedFontSize, value); 
+      set => Set(() => SelectedFontSize, ref _selectedFontSize, value);
+    }
+
+    private int _gifHeight = 36;
+    public int GifHeight
+    {
+      get => _gifHeight;
+      set => Set(() => GifHeight, ref _gifHeight, value);
+    }
+
+    private int _gifWidth = 128;
+    public int GifWidth
+    {
+      get => _gifWidth;
+      set => Set(() => GifWidth, ref _gifWidth, value);
     }
 
     private Image _displayedImage;
@@ -61,22 +77,14 @@ namespace Text2GifGenerator
 
     #endregion XAML Properties
 
-    private RelayCommand<object> _generateCommand;
-    private FontFamily _selectedFont;
-    private int _selectedFontSize;
-
-    public ICommand GenerateCommand => _generateCommand ?? (_generateCommand = new RelayCommand<object>(async param =>
+    private RelayCommand _generateCommand;
+    public ICommand GenerateCommand => _generateCommand ?? (_generateCommand = new RelayCommand(async () =>
     {
       _images.Clear();
-      var mainWindowWidth = ((MainWindow)param).Width;
-      if ((int)mainWindowWidth == 0) mainWindowWidth = 128;
 
-      var imageControlHeight = ((MainWindow)param).MainGrid.RowDefinitions[2].ActualHeight;
-      if ((int)imageControlHeight <= 0) imageControlHeight = 36;
+      _images = _imageConverter.DrawText(Text, new Font(SelectedFont.Name, SelectedFontSize, FontStyle.Bold), GifWidth, GifHeight);
 
-      _images = _imageConverter.DrawText(Text, new Font(SelectedFont.Name, SelectedFontSize, FontStyle.Bold), (int)mainWindowWidth, (int)imageControlHeight);
-
-      await DisplayGif((int)mainWindowWidth - 1);
+      await DisplayGif(GifWidth - 1);
     }));
 
     private async Task DisplayGif(int indexOfDisplayedImage)
