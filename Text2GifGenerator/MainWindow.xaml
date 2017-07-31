@@ -4,6 +4,9 @@
         MinWidth="525" MinHeight="300"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
         d:DesignHeight="300" d:DesignWidth="525" mc:Ignorable="d">
+
+  <Window.Icon>resources/Uiconstock-Flat-File-Type-Gif.ico</Window.Icon>
+
   <Window.Resources>
     <ResourceDictionary>
       <local:ImageToBitmapSourceConverter x:Key="ImageToBitmapSourceConverter" />

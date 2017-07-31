@@ -121,5 +121,11 @@
       <Name>Text2GifGeneratorLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Uiconstock-Flat-File-Type-Gif.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\readme-icon.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
