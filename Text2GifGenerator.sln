@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Components", "externals\Com
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "externals", "externals", "{AD751069-5B1C-4A91-B2AD-57469F24A6B7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Unit Tests", "2. Unit Tests", "{F3F89CCB-1BCF-4857-AD37-5ED15E61E431}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Libraries", "1. Libraries", "{AAB34C3D-DD79-4A19-AF76-AA0C1AF012F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Text2GifGeneratorLibrary.UnitTest", "Text2GifGeneratorLibrary.UnitTest\Text2GifGeneratorLibrary.UnitTest.csproj", "{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,11 +35,17 @@ Global
 		{1C3A03CA-5E55-4CC4-9746-194A4188960A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C3A03CA-5E55-4CC4-9746-194A4188960A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C3A03CA-5E55-4CC4-9746-194A4188960A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1C3A03CA-5E55-4CC4-9746-194A4188960A} = {AD751069-5B1C-4A91-B2AD-57469F24A6B7}
+		{DB89B027-AA73-46C9-AB8A-6F6C4FC1D45F} = {AAB34C3D-DD79-4A19-AF76-AA0C1AF012F6}
+		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2} = {F3F89CCB-1BCF-4857-AD37-5ED15E61E431}
 	EndGlobalSection
 EndGlobal

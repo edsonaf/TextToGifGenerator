@@ -10,12 +10,10 @@ namespace TextToGifGenerator
     ///   Link above contains code to create one image from a text. Code has been extended to create multiple images and place
     ///   them in a list
     /// </summary>
+    /// <param name="settings"></param>
     /// <param name="text"></param>
-    /// <param name="font"></param>
-    /// <param name="maxWidth"></param>
-    /// <param name="maxHeight"></param>
     /// <returns></returns>
-    List<Image> DrawText(string text, Font font, int maxWidth, int maxHeight, bool loop);
+    List<Image> DrawText(TextToImageSettings settings, string text);
 
 
     /// <summary>
@@ -23,6 +21,13 @@ namespace TextToGifGenerator
     ///   Using project in link above we create a gif from list of images we made with above function.
     /// </summary>
     /// <param name="images"></param>
+    /// <param name="filePath"></param>
     void CreateGif(List<Image> images, string filePath);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="filePath"></param>
+    void ExtractGif(string filePath);
   }
 }

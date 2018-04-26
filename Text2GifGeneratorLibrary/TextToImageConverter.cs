@@ -1,77 +1,99 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using Gif.Components;
 
 namespace TextToGifGenerator
 {
-  public class TextToImageConverter
+  public class TextToImageConverter : ITextToImageConverter
   {
+    private Graphics _drawing;
+    private SizeF _textSize;
+    private Brush _textBrush;
+
+    private Image _currentImage;
+    private List<Image> _images;
+
+    private int _amountOfImages; 
+    
     public List<Image> DrawText(TextToImageSettings settings, string text)
     {
-      List<Image> images = new List<Image>();
+      _images = new List<Image>();
 
       // first, create a dummy bitmap just to get a graphics object
-      Bitmap img = new Bitmap(settings.MaxWidth, settings.MaxHeight);
-      Graphics drawing = Graphics.FromImage(img);
+      _currentImage = new Bitmap(settings.MaxWidth, settings.MaxHeight);
+      _drawing = Graphics.FromImage(_currentImage);
 
       // measure the string to see how big the image needs to be
-      SizeF textSize = drawing.MeasureString(text, settings.Font);
+      _textSize = _drawing.MeasureString(text, settings.Font);
+      _textBrush = new SolidBrush(settings.Foreground);
 
       // free up the dummy image and old graphics object
-      img.Dispose();
-      drawing.Dispose();
+      _currentImage.Dispose();
+      _drawing.Dispose();
 
       int currentWidthLocation = settings.MaxWidth;
 
-      float amountOfImage;
-      if (settings.Loop)
-      {
-        amountOfImage = settings.MaxWidth + textSize.Width > textSize.Width * 2 ? settings.MaxWidth + textSize.Width : textSize.Width * 2;
-      }
-      else
-      {
-        amountOfImage = settings.MaxWidth > textSize.Width ? settings.MaxWidth : textSize.Width;
-      }
+      CreateImages(settings, text, currentWidthLocation);
 
-      for (int i = (int) amountOfImage; i > 0; i--)
-      {
-        // create a new image of the right size
-        img = new Bitmap(settings.MaxWidth, settings.MaxHeight);
-        drawing = Graphics.FromImage(img);
-
-        // Adjust for high quality
-        drawing.CompositingQuality = CompositingQuality.HighQuality;
-        drawing.InterpolationMode = InterpolationMode.Bicubic;
-        drawing.PixelOffsetMode = PixelOffsetMode.HighQuality;
-        drawing.SmoothingMode = SmoothingMode.HighQuality;
-        drawing.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-
-        // paint the background
-        drawing.Clear(settings.Background);
-
-        // create a brush for the text
-        Brush textBrush = new SolidBrush(settings.Foreground);
-
-        drawing.DrawString(text, settings.Font, textBrush, new RectangleF(currentWidthLocation, 10, textSize.Width, settings.MaxHeight), settings.StringFormat);
-        drawing.Save();
-
-        textBrush.Dispose();
-        drawing.Dispose();
-
-        images.Add(img);
-        currentWidthLocation--;
-      }
-
-      return images;
+      return _images;
     }
 
+    private void CreateImages(TextToImageSettings settings, string text, int currentWidthLocation)
+    {
+      CalculateAmountOfImages(settings);
+
+      for (int i = _amountOfImages; i > 0; i--)
+      {
+        // create a new image of the right size
+        _currentImage = new Bitmap(settings.MaxWidth, settings.MaxHeight);
+        SetupNewDrawing();
+
+        // set the background
+        _drawing.Clear(settings.Background);
+
+        DrawToImage(settings, text, currentWidthLocation);
+
+        _images.Add(_currentImage);
+        currentWidthLocation--;
+      }
+    }
+
+    private void CalculateAmountOfImages(TextToImageSettings settings)
+    {
+      float amountOfImage = settings.Loop ? 
+        (settings.MaxWidth + _textSize.Width > _textSize.Width * 2 ? settings.MaxWidth + _textSize.Width : _textSize.Width * 2) : 
+        (settings.MaxWidth > _textSize.Width ? settings.MaxWidth : _textSize.Width);
+
+      _amountOfImages = (int) amountOfImage;
+    }
+    
+    private void SetupNewDrawing()
+    {
+      _drawing = Graphics.FromImage(_currentImage);
+      _drawing.CompositingQuality = CompositingQuality.HighQuality;
+      _drawing.InterpolationMode = InterpolationMode.Bicubic;
+      _drawing.PixelOffsetMode = PixelOffsetMode.HighQuality;
+      _drawing.SmoothingMode = SmoothingMode.HighQuality;
+      _drawing.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+    }
+    
+    private void DrawToImage(TextToImageSettings settings, string text, int currentWidthLocation)
+    {
+      RectangleF layoutRectangle = new RectangleF(currentWidthLocation, 10, _textSize.Width, settings.MaxHeight);
+      _drawing.DrawString(text, settings.Font, _textBrush, layoutRectangle, settings.StringFormat);
+      _drawing.Save();
+      _drawing.Dispose();
+    }
+   
     public void CreateGif(List<Image> images, string filePath)
     {
       /* create Gif */
 
-      // you should replace filepath
+      // TODO: Replace Filepath
       string outputFilePath = $"d:\\test.gif";
       AnimatedGifEncoder e = new AnimatedGifEncoder();
       e.Start(outputFilePath);
@@ -87,42 +109,19 @@ namespace TextToGifGenerator
       }
 
       e.Finish();
-
-      /* extract Gif */
-      //string outputPath = "d:\\";
-      //GifDecoder gifDecoder = new GifDecoder();
-      //gifDecoder.Read("d:\\test.gif");
-      //for (int i = 0, count = gifDecoder.GetFrameCount(); i < count; i++)
-      //{
-      //  Image frame = gifDecoder.GetFrame(i);  // frame i
-      //  frame.Save(outputPath + Guid.NewGuid().ToString() + ".png", ImageFormat.Png);
-      //}
     }
-  }
 
-  public class TextToImageSettings
-  {
-    public Font Font { get; set; }
-    public int MaxWidth { get; set; }
-    public int MaxHeight { get; set; }
-    public bool Loop { get; set; }
-
-    public Color Foreground { get; set; } = Color.White;
-    public Color Background { get; set; } = Color.Black;
-
-    public StringFormat StringFormat { get; set; }
-
-    public TextToImageSettings()
+    public void ExtractGif(string filePath)
     {
-      // Set Default Values
+      string outputPath = "d:\\";
+      GifDecoder gifDecoder = new GifDecoder();
       
-      //set the stringformat flags to rtl
-      StringFormat = new StringFormat
+      gifDecoder.Read("d:\\test.gif");
+      for (int i = 0, count = gifDecoder.GetFrameCount(); i < count; i++)
       {
-        // uncomment the next line for right to left languages
-        FormatFlags = StringFormatFlags.DirectionRightToLeft,
-        Trimming = StringTrimming.Word
-      };      
+        Image frame = gifDecoder.GetFrame(i);  // frame i
+        frame.Save(outputPath + Guid.NewGuid().ToString() + ".png", ImageFormat.Png);
+      }
     }
   }
 }
