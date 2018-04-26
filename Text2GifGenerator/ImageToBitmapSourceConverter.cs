@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace Text2GifGenerator
 {
   public class ImageToBitmapSourceConverter : IValueConverter
   {
-    [DllImport("gdi32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool DeleteObject(IntPtr value);
-
-    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      Image myImage = (Image)value;
+      Image myImage = (Image) value;
 
-      if (myImage == null) return null;
+      if (myImage == null)
+      {
+        return null;
+      }
 
-      var bitmap = new Bitmap(myImage);
+      Bitmap bitmap = new Bitmap(myImage);
       IntPtr bmpPt = bitmap.GetHbitmap();
       BitmapSource bitmapSource =
-        System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+        Imaging.CreateBitmapSourceFromHBitmap(
           bmpPt,
           IntPtr.Zero,
           Int32Rect.Empty,
@@ -35,9 +36,13 @@ namespace Text2GifGenerator
       return bitmapSource;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
       throw new NotImplementedException();
     }
+
+    [DllImport("gdi32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool DeleteObject(IntPtr value);
   }
 }
