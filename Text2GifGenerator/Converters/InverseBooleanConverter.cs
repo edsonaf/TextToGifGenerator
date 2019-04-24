@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Text2GifGenerator.Tools
+namespace Text2GifGenerator.Converters
 {
   [ValueConversion(typeof(bool), typeof(bool))]
   public class InverseBooleanConverter : IValueConverter

@@ -7,7 +7,7 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
-namespace Text2GifGenerator
+namespace Text2GifGenerator.Converters
 {
   public class ImageToBitmapSourceConverter : IValueConverter
   {

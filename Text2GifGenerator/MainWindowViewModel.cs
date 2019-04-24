@@ -5,11 +5,13 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Text2GifGenerator.Tools;
 using TextToGifGenerator;
+using FontStyle = System.Drawing.FontStyle;
 
 namespace Text2GifGenerator
 {
@@ -20,20 +22,18 @@ namespace Text2GifGenerator
     private readonly TextToImageConverter _imageConverter;
     private List<Image> _images = new List<Image>();
     private int _sleepAmount = 10;
-    private string _inputText = "";
-    private ObservableCollection<AcceptableQualityOptions> _qualityOptions = new ObservableCollection<AcceptableQualityOptions>();
+    private string _inputText = "Hello World";
+
+    private ObservableCollection<AcceptableQualityOptions> _qualityOptions =
+      new ObservableCollection<AcceptableQualityOptions>();
+
     private AcceptableQualityOptions _selectedQuality;
     private Image _displayedImage;
     private bool _isBusy;
     private bool _loop = true;
 
-    private RelayCommand _showQualityWindowCommand;
-    private RelayCommand _generateCommand;
-    private RelayCommand _upCommand;
-    private RelayCommand _downCommand;
-
     #endregion Private Fields
-    
+
     public MainWindowViewModel()
     {
       _imageConverter = new TextToImageConverter();
@@ -53,7 +53,8 @@ namespace Text2GifGenerator
       set => Set(() => InputText, ref _inputText, value);
     }
 
-    public ObservableCollection<FontFamily> AvailableFontsCollection => new ObservableCollection<FontFamily>(new InstalledFontCollection().Families);
+    public ObservableCollection<FontFamily> AvailableFontsCollection =>
+      new ObservableCollection<FontFamily>(new InstalledFontCollection().Families);
 
     public ObservableCollection<AcceptableQualityOptions> QualityOptions
     {
@@ -95,11 +96,17 @@ namespace Text2GifGenerator
 
     #region Commands
 
-    public ICommand ShowQualityWindowCommand => _showQualityWindowCommand ?? (_showQualityWindowCommand = new RelayCommand(() =>
-    {
-      QualitySettingsWindow win = new QualitySettingsWindow {DataContext = new QualitySettingsViewModel(SelectedQuality)};
-      win.Show();
-    }));
+    private RelayCommand _showQualityWindowCommand;
+
+    public ICommand ShowQualityWindowCommand => _showQualityWindowCommand ?? (_showQualityWindowCommand =
+                                                  new RelayCommand(() =>
+                                                  {
+                                                    QualitySettingsWindow win = new QualitySettingsWindow
+                                                      {DataContext = new QualitySettingsViewModel(SelectedQuality)};
+                                                    win.Show();
+                                                  }));
+
+    private RelayCommand _generateCommand;
 
     public ICommand GenerateCommand => _generateCommand ?? (_generateCommand = new RelayCommand(async () =>
     {
@@ -114,22 +121,13 @@ namespace Text2GifGenerator
         Background = Color.White,
         Foreground = Color.Red
       };
-      
+
       _images = _imageConverter.DrawText(settings, InputText);
 
-      while (Loop)
-      {
-        try
-        {
-          await DisplayGif();
-        }
-        catch
-        {
-          IsBusy = false;
-          Loop = false;
-        }
-      }
+      DisplayGif();
     }));
+
+    private RelayCommand _upCommand;
 
     public ICommand UpCommand => _upCommand ?? (_upCommand = new RelayCommand(() =>
     {
@@ -143,6 +141,8 @@ namespace Text2GifGenerator
       }
     }));
 
+    private RelayCommand _downCommand;
+
     public ICommand DownCommand => _downCommand ?? (_downCommand = new RelayCommand(() =>
     {
       if (SleepAmount - 5 <= 1)
@@ -155,15 +155,20 @@ namespace Text2GifGenerator
       }
     }));
 
+    private RelayCommand _saveCommand;
+
+    public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(() =>
+    {
+      MessageBox.Show("Not implemented yet..");
+    }));
+
     #endregion Commands
-    
+
     #region Private Functions
 
-    private async Task DisplayGif(int indexOfDisplayedImage = 0)
+    private void DisplayGif()
     {
-      IsBusy = true;
-
-      await Task.Run(async () =>
+      Application.Current?.Dispatcher.Invoke(async () =>
       {
         foreach (Image image in _images)
         {
@@ -174,16 +179,11 @@ namespace Text2GifGenerator
           });
         }
 
-        Thread.Sleep(250);
-
-        DisplayedImage = null;
-        DisplayedImage = _images[indexOfDisplayedImage];
-        IsBusy = false;
+        if (Loop) DisplayGif();
       });
     }
 
     #endregion Private Functions
-    
   }
 
   public class AcceptableQualityOptions : ObservableObject
