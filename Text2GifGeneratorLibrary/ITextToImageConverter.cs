@@ -22,7 +22,8 @@ namespace TextToGifGenerator
     /// </summary>
     /// <param name="images"></param>
     /// <param name="filePath"></param>
-    void CreateGif(List<Image> images, string filePath);
+    /// <param name="repeat"></param>
+    void CreateGif(List<Image> images, string filePath, bool repeat = true);
 
     /// <summary>
     /// 

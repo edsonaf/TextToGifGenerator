@@ -89,19 +89,19 @@ namespace TextToGifGenerator
       _drawing.Dispose();
     }
    
-    public void CreateGif(List<Image> images, string filePath)
+    public void CreateGif(List<Image> images, string filePath, bool repeat = true)
     {
       /* create Gif */
 
       // TODO: Replace Filepath
-      string outputFilePath = $"d:\\test.gif";
+      string outputFilePath = filePath;
       AnimatedGifEncoder e = new AnimatedGifEncoder();
       e.Start(outputFilePath);
       e.SetDelay(images.Count / 50);
 
       // -1: no repeat, 
       //  0: always repeat (loop)
-      e.SetRepeat(0);
+      e.SetRepeat(repeat ? 0 : -1);
 
       for (int i = 0, count = images.Count; i < count; i++)
       {
