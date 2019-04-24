@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Text2GifGenerator"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:tools="clr-namespace:Text2GifGenerator.Tools"
     xmlns:converters="clr-namespace:Text2GifGenerator.Converters"
     Title="MainWindow"
     Width="550"
@@ -27,7 +26,6 @@
             <Style BasedOn="{StaticResource InputTextBox}" TargetType="{x:Type TextBox}" />
             <Style BasedOn="{StaticResource DefaultCheckBox}" TargetType="{x:Type CheckBox}" />
             <Style BasedOn="{StaticResource DefaultComboBox}" TargetType="{x:Type ComboBox}" />
-            <converters:InverseBooleanConverter x:Key="NotBooleanConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -123,6 +121,7 @@
                 Margin="0,4,0,0"
                 Command="{Binding SaveCommand}"
                 Content="Save" />
+            <ProgressBar Minimum="0" Maximum="{Binding MaxProgressAmount}" Value="{Binding CurrentProgressAmount}" Height="50"/>
         </StackPanel>
 
     </Grid>

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Threading.Tasks;
 using Gif.Components;
 
 namespace TextToGifGenerator
@@ -17,8 +18,8 @@ namespace TextToGifGenerator
     private Image _currentImage;
     private List<Image> _images;
 
-    private int _amountOfImages; 
-    
+    private int _amountOfImages;
+
     public List<Image> DrawText(TextToImageSettings settings, string text)
     {
       _images = new List<Image>();
@@ -64,13 +65,15 @@ namespace TextToGifGenerator
 
     private void CalculateAmountOfImages(TextToImageSettings settings)
     {
-      float amountOfImage = settings.Loop ? 
-        (settings.MaxWidth + _textSize.Width > _textSize.Width * 2 ? settings.MaxWidth + _textSize.Width : _textSize.Width * 2) : 
-        (settings.MaxWidth > _textSize.Width ? settings.MaxWidth : _textSize.Width);
+      float amountOfImage = settings.Loop
+        ? (settings.MaxWidth + _textSize.Width > _textSize.Width * 2
+          ? settings.MaxWidth + _textSize.Width
+          : _textSize.Width * 2)
+        : (settings.MaxWidth > _textSize.Width ? settings.MaxWidth : _textSize.Width);
 
       _amountOfImages = (int) amountOfImage;
     }
-    
+
     private void SetupNewDrawing()
     {
       _drawing = Graphics.FromImage(_currentImage);
@@ -80,7 +83,7 @@ namespace TextToGifGenerator
       _drawing.SmoothingMode = SmoothingMode.HighQuality;
       _drawing.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
     }
-    
+
     private void DrawToImage(TextToImageSettings settings, string text, int currentWidthLocation)
     {
       RectangleF layoutRectangle = new RectangleF(currentWidthLocation, 10, _textSize.Width, settings.MaxHeight);
@@ -88,12 +91,11 @@ namespace TextToGifGenerator
       _drawing.Save();
       _drawing.Dispose();
     }
-   
-    public void CreateGif(List<Image> images, string filePath, bool repeat = true)
-    {
-      /* create Gif */
 
-      // TODO: Replace Filepath
+    public async Task<bool> CreateGif(List<Image> images, string filePath, IProgress<ProgressReport> progress,
+      bool repeat = true)
+    {
+      bool ok = false;
       string outputFilePath = filePath;
       AnimatedGifEncoder e = new AnimatedGifEncoder();
       e.Start(outputFilePath);
@@ -103,25 +105,40 @@ namespace TextToGifGenerator
       //  0: always repeat (loop)
       e.SetRepeat(repeat ? 0 : -1);
 
-      for (int i = 0, count = images.Count; i < count; i++)
+      await Task.Run(() =>
       {
-        e.AddFrame(images[i]);
-      }
+        for (int i = 0, count = images.Count; i < count; i++)
+        {
+          e.AddFrame(images[i]);
+          progress.Report(new ProgressReport() {CurrentProgressAmount = i, TotalProgressAmount = images.Count});
+        }
 
-      e.Finish();
+        ok = e.Finish();
+      });
+
+      return ok;
     }
 
     public void ExtractGif(string filePath)
     {
       string outputPath = "d:\\";
       GifDecoder gifDecoder = new GifDecoder();
-      
+
       gifDecoder.Read("d:\\test.gif");
       for (int i = 0, count = gifDecoder.GetFrameCount(); i < count; i++)
       {
-        Image frame = gifDecoder.GetFrame(i);  // frame i
+        Image frame = gifDecoder.GetFrame(i); // frame i
         frame.Save(outputPath + Guid.NewGuid().ToString() + ".png", ImageFormat.Png);
       }
     }
+  }
+
+  public class ProgressReport
+  {
+    //current progress
+    public int CurrentProgressAmount { get; set; }
+
+    //total progress
+    public int TotalProgressAmount { get; set; }
   }
 }

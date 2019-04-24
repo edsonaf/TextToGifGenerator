@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace TextToGifGenerator
 {
@@ -22,8 +24,9 @@ namespace TextToGifGenerator
     /// </summary>
     /// <param name="images"></param>
     /// <param name="filePath"></param>
+    /// <param name="progress"></param>
     /// <param name="repeat"></param>
-    void CreateGif(List<Image> images, string filePath, bool repeat = true);
+    Task<bool> CreateGif(List<Image> images, string filePath, IProgress<ProgressReport> progress, bool repeat = true);
 
     /// <summary>
     /// 

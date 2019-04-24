@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Text;
@@ -9,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.Win32;
 using Text2GifGenerator.Tools;
 using TextToGifGenerator;
 using FontStyle = System.Drawing.FontStyle;
@@ -92,6 +94,16 @@ namespace Text2GifGenerator
       set => Set(() => Loop, ref _loop, value);
     }
 
+    public int MaxProgressAmount => _images.Count == 0 ? 100 : _images.Count;
+
+    private int _currentProgressAmount;
+
+    public int CurrentProgressAmount
+    {
+      get => _currentProgressAmount;
+      set => Set(() => CurrentProgressAmount, ref _currentProgressAmount, value);
+    }
+
     #endregion XAML Properties
 
     #region Commands
@@ -108,7 +120,7 @@ namespace Text2GifGenerator
 
     private RelayCommand _generateCommand;
 
-    public ICommand GenerateCommand => _generateCommand ?? (_generateCommand = new RelayCommand(async () =>
+    public ICommand GenerateCommand => _generateCommand ?? (_generateCommand = new RelayCommand(() =>
     {
       _images.Clear();
 
@@ -119,7 +131,7 @@ namespace Text2GifGenerator
         MaxHeight = SelectedQuality.GifHeight,
         Loop = true,
         Background = Color.White,
-        Foreground = Color.Red
+        Foreground = Color.FromArgb(255, 19, 107, 117)
       };
 
       _images = _imageConverter.DrawText(settings, InputText);
@@ -159,8 +171,19 @@ namespace Text2GifGenerator
 
     public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(() =>
     {
-      MessageBox.Show("Not implemented yet..");
-    }));
+      var progressIndicator = new Progress<ProgressReport>(ReportProgress);
+      SaveFileDialog dlg = new SaveFileDialog()
+      {
+        AddExtension = true,
+        DefaultExt = ".gif",
+        InitialDirectory = string.Empty,
+      };
+
+      if (dlg.ShowDialog() == true)
+      {
+        _imageConverter.CreateGif(_images, dlg.FileName, progressIndicator, Loop).ConfigureAwait(true);
+      }
+    }, () => _images.Count > 0));
 
     #endregion Commands
 
@@ -181,6 +204,15 @@ namespace Text2GifGenerator
 
         if (Loop) DisplayGif();
       });
+    }
+
+    private void ReportProgress(ProgressReport progress)
+    {
+      RaisePropertyChanged(() => MaxProgressAmount);
+      CurrentProgressAmount = progress.CurrentProgressAmount;
+
+      // reset if needed
+      if (MaxProgressAmount - CurrentProgressAmount <= MaxProgressAmount * 0.10) CurrentProgressAmount = 0;
     }
 
     #endregion Private Functions
