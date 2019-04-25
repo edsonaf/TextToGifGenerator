@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
@@ -169,7 +170,7 @@ namespace Text2GifGenerator
 
     private RelayCommand _saveCommand;
 
-    public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(() =>
+    public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(async () =>
     {
       var progressIndicator = new Progress<ProgressReport>(ReportProgress);
       SaveFileDialog dlg = new SaveFileDialog()
@@ -181,7 +182,12 @@ namespace Text2GifGenerator
 
       if (dlg.ShowDialog() == true)
       {
-        _imageConverter.CreateGif(_images, dlg.FileName, progressIndicator, Loop).ConfigureAwait(true);
+        bool result = await _imageConverter.CreateGif(_images, dlg.FileName, progressIndicator, Loop).ConfigureAwait(true);
+        if (result)
+        {
+          CurrentProgressAmount = 0;
+          Process.Start(dlg.FileName);
+        }
       }
     }, () => _images.Count > 0));
 
@@ -210,9 +216,6 @@ namespace Text2GifGenerator
     {
       RaisePropertyChanged(() => MaxProgressAmount);
       CurrentProgressAmount = progress.CurrentProgressAmount;
-
-      // reset if needed
-      if (MaxProgressAmount - CurrentProgressAmount <= MaxProgressAmount * 0.10) CurrentProgressAmount = 0;
     }
 
     #endregion Private Functions

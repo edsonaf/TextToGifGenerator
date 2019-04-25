@@ -99,7 +99,7 @@ namespace TextToGifGenerator
       string outputFilePath = filePath;
       AnimatedGifEncoder e = new AnimatedGifEncoder();
       e.Start(outputFilePath);
-      e.SetDelay(images.Count / 50);
+      e.SetDelay(images.Count / 50); // TODO: stop using magic number, use a constant
 
       // -1: no repeat, 
       //  0: always repeat (loop)

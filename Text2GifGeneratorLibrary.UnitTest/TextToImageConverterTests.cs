@@ -47,7 +47,7 @@ namespace Text2GifGeneratorLibrary.UnitTest
     public void DrawText_InvertBackgroundAndForeground_GenerateImages()
     {
       TextToImageConverter converter = new TextToImageConverter();
-      TextToImageSettings settings = new TextToImageSettings()
+      TextToImageSettings settings = new TextToImageSettings
       {
         Font = new Font(new FontFamily("Tahoma"), 20, FontStyle.Bold),
         MaxHeight = 5678,
