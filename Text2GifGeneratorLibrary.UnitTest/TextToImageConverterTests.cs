@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using NUnit.Framework;
 using TextToGifGenerator;
@@ -16,8 +15,6 @@ namespace Text2GifGeneratorLibrary.UnitTest
       TextToImageSettings settings = new TextToImageSettings()
       {
         Font = new Font(new FontFamily("Tahoma"), 20, FontStyle.Bold),
-        MaxHeight = 999,
-        MaxWidth = 999,
         Loop = false
       };
 
@@ -33,8 +30,6 @@ namespace Text2GifGeneratorLibrary.UnitTest
       TextToImageSettings settings = new TextToImageSettings()
       {
         Font = new Font(new FontFamily("Tahoma"), 20, FontStyle.Bold),
-        MaxHeight = 999,
-        MaxWidth = 999,
         Loop = true
       };
 
