@@ -6,6 +6,8 @@
     xmlns:local="clr-namespace:Text2GifGenerator"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="clr-namespace:Text2GifGenerator.Converters"
+    xmlns:System="clr-namespace:System;assembly=System.Runtime"
+    xmlns:text2GifGeneratorLibrary="clr-namespace:Text2GifGeneratorLibrary;assembly=Text2GifGeneratorLibrary"
     Title="MainWindow"
     Width="550"
     Height="600"
@@ -16,7 +18,7 @@
     d:DesignWidth="525"
     mc:Ignorable="d">
 
-    <Window.Icon>resources/Uiconstock-Flat-File-Type-Gif.ico</Window.Icon>
+    <!-- <Window.Icon>resources/Uiconstock-Flat-File-Type-Gif.ico</Window.Icon> -->
 
     <Window.Resources>
         <ResourceDictionary>
@@ -26,6 +28,13 @@
             <Style BasedOn="{StaticResource InputTextBox}" TargetType="{x:Type TextBox}" />
             <Style BasedOn="{StaticResource DefaultCheckBox}" TargetType="{x:Type CheckBox}" />
             <Style BasedOn="{StaticResource DefaultComboBox}" TargetType="{x:Type ComboBox}" />
+
+            <ObjectDataProvider x:Key="FlowDirectionStaticList"
+                                MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="text2GifGeneratorLibrary:LibraryEnums+FLowDirection" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -63,19 +72,20 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <Label
+                    Content="Quality" />
+                <StackPanel
+                    Orientation="Horizontal">
+                    <ComboBox
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding QualityOptions}"
+                        SelectedItem="{Binding SelectedQuality}" />
+                </StackPanel>
 
-            <Label
-                Grid.Row="0"
-                Grid.Column="0"
-                Content="Quality" />
-            <StackPanel
-                Grid.Row="0"
-                Grid.Column="1"
-                Orientation="Horizontal">
-                <ComboBox
-                    DisplayMemberPath="Name"
-                    ItemsSource="{Binding QualityOptions}"
-                    SelectedItem="{Binding SelectedQuality}" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource FlowDirectionStaticList }}"
+                          SelectedItem="{Binding TextFlowDirection}" />
+
             </StackPanel>
 
             <Label
@@ -100,19 +110,10 @@
         </Grid>
 
         <StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Bottom" Margin="4 0 4 8">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                <Button
-                    MinWidth="30"
-                    VerticalContentAlignment="Top"
-                    Command="{Binding DownCommand}"
-                    Content="-" />
-                <Label HorizontalAlignment="Center" Content="{Binding SleepAmount}" Margin="8 0 8 0"/>
-                <Button
-                    MinWidth="30"
-                    VerticalContentAlignment="Top"
-                    Command="{Binding UpCommand}"
-                    Content="+" />
-                <CheckBox Content="Loop" IsChecked="{Binding Loop}" Foreground="AliceBlue" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="8 0 0 0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label HorizontalAlignment="Center" Content="{Binding SleepAmount}" Margin="8 0 8 0" />
+                <CheckBox Content="Loop" IsChecked="{Binding Loop}" Foreground="AliceBlue" VerticalAlignment="Center"
+                          VerticalContentAlignment="Center" Margin="8 0 0 0" />
             </StackPanel>
 
             <Image Margin="0,8,0,0"
@@ -121,7 +122,8 @@
                 Margin="0,4,0,0"
                 Command="{Binding SaveCommand}"
                 Content="Save" />
-            <ProgressBar Minimum="0" Maximum="{Binding MaxProgressAmount}" Value="{Binding CurrentProgressAmount}" Height="50"/>
+            <ProgressBar Minimum="0" Maximum="{Binding MaxProgressAmount}" Value="{Binding CurrentProgressAmount}"
+                         Height="50" />
         </StackPanel>
 
     </Grid>

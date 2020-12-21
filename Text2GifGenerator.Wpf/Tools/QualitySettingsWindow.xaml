@@ -53,6 +53,6 @@
                   Grid.Column="1"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  IsChecked="False" />
+                  IsChecked="{Binding SelectedQuality.Loop}" />
     </Grid>
 </Window>
