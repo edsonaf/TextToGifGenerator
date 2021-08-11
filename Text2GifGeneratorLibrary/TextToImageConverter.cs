@@ -100,7 +100,7 @@ namespace Text2GifGeneratorLibrary
         {
             var drawing = Graphics.FromImage(currentImage);
             drawing.CompositingQuality = CompositingQuality.HighQuality;
-            drawing.InterpolationMode = InterpolationMode.Bicubic;
+            drawing.InterpolationMode = InterpolationMode.High;
             drawing.PixelOffsetMode = PixelOffsetMode.HighQuality;
             drawing.SmoothingMode = SmoothingMode.HighQuality;
             drawing.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
@@ -143,7 +143,7 @@ namespace Text2GifGeneratorLibrary
                 for (int i = 0, count = images.Count; i < count; i++)
                 {
                     e.AddFrame(images[i]);
-                    progress.Report(
+                    progress?.Report(
                         new ProgressReport {CurrentProgressAmount = i, TotalProgressAmount = images.Count});
                 }
 

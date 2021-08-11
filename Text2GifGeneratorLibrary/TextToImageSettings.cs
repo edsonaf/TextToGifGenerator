@@ -11,7 +11,7 @@ namespace Text2GifGeneratorLibrary
         public Color Foreground { get; set; } = Color.White;
         public Color Background { get; set; } = Color.Black;
         public LibraryEnums.FLowDirection FlowDirection { get; set; } = LibraryEnums.FLowDirection.UpToDown;
-        public StringFormat StringFormat { get; }
+        public StringFormat StringFormat { get; set; }
 
         public TextToImageSettings()
         {
@@ -23,5 +23,21 @@ namespace Text2GifGeneratorLibrary
                 // Trimming = StringTrimming.Word
             };
         }
+    }
+    
+    public static class T2IHelper {
+        
+        public static TextToImageSettings Default => new TextToImageSettings()
+        {
+            Font = new Font(new FontFamily("Comic Sans MS").Name, 16),
+            MaxWidth = 128,
+            MaxHeight = 36,
+            Loop = true,
+            Foreground = Color.Black,
+            Background = Color.White,
+            FlowDirection = LibraryEnums.FLowDirection.RightToLeft,
+            StringFormat = new StringFormat(){}
+        };
+    
     }
 }

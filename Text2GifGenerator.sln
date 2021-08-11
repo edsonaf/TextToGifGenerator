@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Text2GifGeneratorLibrary.Un
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Executables", "3. Executables", "{E4716E30-1419-4B85-8BE8-99B9616E859F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextToGifGenerator.Console", "TextToGifGenerator.Console\TextToGifGenerator.Console.csproj", "{E5572720-E563-40F7-8199-53BFC5472C9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,10 @@ Global
 		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}.Debug|x64.Build.0 = Debug|x64
 		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}.Release|x64.ActiveCfg = Release|x64
 		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2}.Release|x64.Build.0 = Release|x64
+		{E5572720-E563-40F7-8199-53BFC5472C9F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E5572720-E563-40F7-8199-53BFC5472C9F}.Debug|x64.Build.0 = Debug|Any CPU
+		{E5572720-E563-40F7-8199-53BFC5472C9F}.Release|x64.ActiveCfg = Release|Any CPU
+		{E5572720-E563-40F7-8199-53BFC5472C9F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,5 +56,6 @@ Global
 		{DB89B027-AA73-46C9-AB8A-6F6C4FC1D45F} = {AAB34C3D-DD79-4A19-AF76-AA0C1AF012F6}
 		{2AF95A49-DF3F-490F-9A29-29BCD8CE42D2} = {F3F89CCB-1BCF-4857-AD37-5ED15E61E431}
 		{5AB94F41-0E0F-4899-B527-D5B02D914E69} = {E4716E30-1419-4B85-8BE8-99B9616E859F}
+		{E5572720-E563-40F7-8199-53BFC5472C9F} = {E4716E30-1419-4B85-8BE8-99B9616E859F}
 	EndGlobalSection
 EndGlobal
