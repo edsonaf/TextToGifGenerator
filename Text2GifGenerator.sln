@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Libraries", "1. Librarie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Executables", "3. Executables", "{E4716E30-1419-4B85-8BE8-99B9616E859F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T2G", "T2G\T2G.csproj", "{72A5DA8D-4F57-4D31-9264-AC152C3E61E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T2G", "T2G\T2G.csproj", "{72A5DA8D-4F57-4D31-9264-AC152C3E61E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T2G.UnitTest", "T2G.UnitTest\T2G.UnitTest.csproj", "{124CC8C3-B363-4424-9F0E-ED40AD1F2CCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T2G.UnitTest", "T2G.UnitTest\T2G.UnitTest.csproj", "{124CC8C3-B363-4424-9F0E-ED40AD1F2CCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +24,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5AB94F41-0E0F-4899-B527-D5B02D914E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AB94F41-0E0F-4899-B527-D5B02D914E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AB94F41-0E0F-4899-B527-D5B02D914E69}.Debug|x64.ActiveCfg = Debug|x64
 		{5AB94F41-0E0F-4899-B527-D5B02D914E69}.Debug|x64.Build.0 = Debug|x64
 		{5AB94F41-0E0F-4899-B527-D5B02D914E69}.Release|Any CPU.ActiveCfg = Release|Any CPU

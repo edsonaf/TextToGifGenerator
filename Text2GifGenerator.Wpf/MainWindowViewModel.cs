@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -9,16 +12,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using Microsoft.Win32;
+using T2G;
 using Text2GifGenerator.Tools;
-using Text2GifGeneratorLibrary;
 using FontStyle = System.Drawing.FontStyle;
 
 namespace Text2GifGenerator
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ObservableObject
     {
         #region Private Fields
 
@@ -61,7 +61,7 @@ namespace Text2GifGenerator
         public string InputText
         {
             get => _inputText;
-            set => Set(() => InputText, ref _inputText, value);
+            set => SetProperty(ref _inputText, value);
         }
 
         public ObservableCollection<FontFamily> AvailableFontsCollection =>
@@ -70,38 +70,38 @@ namespace Text2GifGenerator
         public ObservableCollection<AcceptableQualityOptions> QualityOptions
         {
             get => _qualityOptions;
-            set => Set(() => QualityOptions, ref _qualityOptions, value);
+            set => SetProperty(ref _qualityOptions, value);
         }
 
         public AcceptableQualityOptions SelectedQuality
         {
             get => _selectedQuality;
-            set => Set(() => SelectedQuality, ref _selectedQuality, value);
+            set => SetProperty(ref _selectedQuality, value);
         }
 
 
         public LibraryEnums.FLowDirection TextFlowDirection
         {
             get => _textFlowDirection;
-            set => Set(() => TextFlowDirection, ref _textFlowDirection, value);
+            set => SetProperty(ref _textFlowDirection, value);
         }
 
         public Image DisplayedImage
         {
             get => _displayedImage;
-            set => Set(() => DisplayedImage, ref _displayedImage, value);
+            set => SetProperty(ref _displayedImage, value);
         }
 
         public bool Loop
         {
             get => _loop;
-            set => Set(() => Loop, ref _loop, value);
+            set => SetProperty(ref _loop, value);
         }
 
         public int SleepAmount
         {
             get => _sleepAmount;
-            set => Set(() => SleepAmount, ref _sleepAmount, value);
+            set => SetProperty(ref _sleepAmount, value);
         }
 
         public int MaxProgressAmount { get; set; } = 100;
@@ -109,7 +109,7 @@ namespace Text2GifGenerator
         public int CurrentProgressAmount
         {
             get => _currentProgressAmount;
-            set => Set(() => CurrentProgressAmount, ref _currentProgressAmount, value);
+            set => SetProperty(ref _currentProgressAmount, value);
         }
 
         #endregion XAML Properties
@@ -203,7 +203,7 @@ namespace Text2GifGenerator
 
         private void ReportProgress(ProgressReport progress)
         {
-            RaisePropertyChanged(() => MaxProgressAmount);
+            OnPropertyChanged(nameof(MaxProgressAmount));
             MaxProgressAmount = progress.TotalProgressAmount;
             CurrentProgressAmount = progress.CurrentProgressAmount;
         }

@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using GalaSoft.MvvmLight;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Text2GifGenerator
 {
@@ -28,38 +28,38 @@ namespace Text2GifGenerator
         public string Name
         {
             get => _name;
-            set => Set(() => Name, ref _name, value);
+            set => SetProperty(ref _name, value);
         }
 
         public int SelectedFontSize
         {
             get => _selectedFontSize;
-            set => Set(() => SelectedFontSize, ref _selectedFontSize, value);
+            set => SetProperty(ref _selectedFontSize, value);
         }
 
         public int GifHeight
         {
             get => _gifHeight;
-            set => Set(() => GifHeight, ref _gifHeight, value);
+            set => SetProperty(ref _gifHeight, value);
         }
 
         public int GifWidth
         {
             get => _gifWidth;
-            set => Set(() => GifWidth, ref _gifWidth, value);
+            set => SetProperty(ref _gifWidth, value);
         }
 
         public FontFamily SelectedFont
         {
             get => _selectedFont;
-            set => Set(() => SelectedFont, ref _selectedFont, value);
+            set => SetProperty(ref _selectedFont, value);
         }
 
         private bool _loop;
         public bool Loop
         {
             get => _loop;
-            set => Set(() => Loop, ref _loop, value);
+            set => SetProperty(ref _loop, value);
         }
         public override string ToString()
         {
