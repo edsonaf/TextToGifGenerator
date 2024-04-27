@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Text2GifGeneratorLibrary
+namespace T2G
 {
     public class TextToImageSettings
     {

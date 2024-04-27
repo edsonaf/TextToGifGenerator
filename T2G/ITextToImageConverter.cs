@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 
-namespace Text2GifGeneratorLibrary
+namespace T2G
 {
     public interface ITextToImageConverter
     {

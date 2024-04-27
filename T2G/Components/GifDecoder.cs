@@ -46,7 +46,7 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 
-namespace Components
+namespace T2G.Components
 {
     public class GifDecoder
     {

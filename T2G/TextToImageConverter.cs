@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Threading.Tasks;
-using Components;
+using T2G.Components;
 
-namespace Text2GifGeneratorLibrary
+namespace T2G
 {
     public class TextToImageConverter : ITextToImageConverter
     {

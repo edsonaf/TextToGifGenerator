@@ -1,4 +1,4 @@
-﻿namespace Text2GifGeneratorLibrary
+﻿namespace T2G
 {
     public static class LibraryEnums
     {

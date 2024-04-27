@@ -43,7 +43,7 @@
 
 using System;
 
-namespace Components
+namespace T2G.Components
 {
     public class NeuQuant
     {

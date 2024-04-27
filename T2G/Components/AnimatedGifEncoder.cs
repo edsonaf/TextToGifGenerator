@@ -45,7 +45,7 @@ using System.IO;
 
 #endregion
 
-namespace Components
+namespace T2G.Components
 {
     public class AnimatedGifEncoder
     {

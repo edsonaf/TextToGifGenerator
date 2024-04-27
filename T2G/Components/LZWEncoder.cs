@@ -26,7 +26,7 @@
 using System;
 using System.IO;
 
-namespace Components
+namespace T2G.Components
 {
     public class LzwEncoder
     {
