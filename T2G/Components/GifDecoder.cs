@@ -41,10 +41,8 @@
 
 #endregion
 
-using System;
 using System.Collections;
 using System.Drawing;
-using System.IO;
 
 namespace T2G.Components
 {

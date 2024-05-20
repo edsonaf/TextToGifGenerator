@@ -23,9 +23,6 @@
 
 #endregion
 
-using System;
-using System.IO;
-
 namespace T2G.Components
 {
     public class LzwEncoder

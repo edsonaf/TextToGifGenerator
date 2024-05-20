@@ -41,8 +41,6 @@
 
 #endregion
 
-using System;
-
 namespace T2G.Components
 {
     public class NeuQuant
